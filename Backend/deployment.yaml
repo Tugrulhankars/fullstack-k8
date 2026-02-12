@@ -22,7 +22,11 @@ spec:
           ports:
             - name: http 
               containerPort: 8081
-          env: # containers altındaki liste elemanının (backend) doğrudan özelliği
+          env:
+            # ÖNEMLİ: Eğer DB bilgisayarındaysa 'host.minikube.internal' kullan. 
+            # Eğer K8s içindeyse buraya Postgres servis adını yaz.
+            - name: DB_HOST
+              value: "host.minikube.internal" 
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
