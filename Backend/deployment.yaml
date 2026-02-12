@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment 
 metadata:
-  name: backend-deploymnet
+  name: backend-deployment
+  namespace: crud-app-backend
   labels:
     app: backend
 spec:
@@ -16,11 +17,24 @@ spec:
     spec:
       containers:
         - name: backend 
-          image: d
+          image: tugrulhan/backend-app:latest
           imagePullPolicy: Never
           ports:
-          - name: http 
-            containerPort: 8081
-            env:
+            - name: http 
+              containerPort: 8081
+          env: # <--- Port ile aynı hizada olmalı, içine yazılmamalı
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: crud-app-backend-secret
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: crud-app-backend-secret
+                  key: DB_USERNAME
             - name: DB_PASSWORD
               valueFrom:
+                secretKeyRef:
+                  name: crud-app-backend-secret
+                  key: DB_PASSWORD
